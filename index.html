@@ -132,6 +132,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
     }
     .record {
       width: 170px;
@@ -371,23 +372,22 @@
     .polaroid {
       min-width: 110px;
       background: white;
-      padding: 6px 6px 16px 6px;
+      padding: 6px 6px 12px 6px;
       border-radius: 4px;
       color: #1e293b;
       font-size: 0.65rem;
       font-weight: bold;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      text-align: center;
     }
     .polaroid-img {
       width: 100%;
       height: 90px;
-      background: #cbd5e1;
+      object-fit: cover;
       border-radius: 2px;
       margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
+      display: block;
+      background: #cbd5e1;
     }
 
     /* --- SECTION 8: VIBE DETECTOR --- */
@@ -541,7 +541,7 @@
     <!-- SEC 3: INTERACTIVE BIRTHDAY CAKE -->
     <section class="card">
       <div class="card-title">🎂 Make a Wish!</div>
-      <p style="font-size: 0.8rem; color: var(--text-muted);">Tap the cake to blow out your 22nd candle</p>
+      <p style="font-size: 0.8rem; color: var(--text-muted);">Tap the cake to blow out your candle</p>
       <div class="cake-container" id="cake-btn">
         <div class="candle">
           <div class="flame" id="cake-flame"></div>
@@ -604,16 +604,27 @@
     <section class="card">
       <div class="card-title">📻 Voice Jukebox & Photos</div>
       <div class="tapes-list">
-        <button class="tape-btn" onclick="playVoiceNote('Note 1: Happy Birthday Mawutor!')">📼 Tape 1</button>
-        <button class="tape-btn" onclick="playVoiceNote('Note 2: You mean the world to me!')">📼 Tape 2</button>
-        <button class="tape-btn" onclick="playVoiceNote('Note 3: Can\'t wait to celebrate!')">📼 Tape 3</button>
+        <button class="tape-btn" onclick="playVoiceNote('tape1.m4a', 'Tape 1')">📼 Tape 1</button>
+        <button class="tape-btn" onclick="playVoiceNote('tape2.m4a', 'Tape 2')">📼 Tape 2</button>
+        <button class="tape-btn" onclick="playVoiceNote('tape3.m4a', 'Tape 3')">📼 Tape 3</button>
       </div>
+      
+      <audio id="tape-player"></audio>
       <p id="voice-status" style="font-size: 0.8rem; color: var(--pink-glow); margin-bottom: 12px;"></p>
 
       <div class="photo-wall">
-        <div class="polaroid"><div class="polaroid-img">📸</div>Favorite Memory</div>
-        <div class="polaroid"><div class="polaroid-img">✨</div>That Smile</div>
-        <div class="polaroid"><div class="polaroid-img">💖</div>Us Together</div>
+        <div class="polaroid">
+          <img src="photo1.jpg" class="polaroid-img" alt="Memory 1">
+          Favorite Memory
+        </div>
+        <div class="polaroid">
+          <img src="photo2.jpg" class="polaroid-img" alt="Memory 2">
+          That Smile
+        </div>
+        <div class="polaroid">
+          <img src="photo3.jpg" class="polaroid-img" alt="Memory 3">
+          Us Together
+        </div>
       </div>
     </section>
 
@@ -647,7 +658,7 @@
         </div>
         <div class="letter-body" id="secret-letter">
           <p><strong>Dearest Mawutor,</strong></p><br>
-          <p>Happy 22nd Birthday! 🎉 From the moment we met on February 12th, you've brought so much warmth, joy, and laughter into my life.</p><br>
+          <p>Happy Birthday! 🎉 From the moment we met on February 12th, you've brought so much warmth, joy, and laughter into my life.</p><br>
           <p>I built this little interactive universe just for you to celebrate how amazing you are. I hope this new year brings you success in your engineering journey and all the happiness you deserve.</p><br>
           <p>Always cheering for you,<br><strong>Yours ❤️</strong></p>
         </div>
@@ -761,7 +772,7 @@
       candleBlown = true;
       id('cake-flame').style.display = 'none';
       id('cake-smoke').classList.add('active');
-      id('cake-status').innerText = "✨ Wish Granted! Happy 22nd Birthday! ✨";
+      id('cake-status').innerText = "✨ Wish Granted! Happy Birthday! ✨";
     });
 
     /* --- SEC 4: GAME --- */
@@ -807,9 +818,8 @@
       const item = document.createElement('div');
       item.className = 'falling-item';
       
-      // Items: Pizza 🍕, Game Controller 🎮, Token 🪙, Gem 🌟, Bomb 💣
       const types = ['🍕', '🎮', '🪙', '🌟'];
-      if(gameTime < 40) types.push('💣'); // Add bombs after 20s
+      if(gameTime < 40) types.push('💣'); // Hazards after 20s
       
       const chosen = types[Math.floor(Math.random() * types.length)];
       item.innerText = chosen;
@@ -817,14 +827,13 @@
       gameBox.appendChild(item);
 
       let top = -30;
-      let speed = (60 - gameTime > 40) ? 5 : (60 - gameTime > 20) ? 4 : 3; // Progressive difficulty
+      let speed = (60 - gameTime > 40) ? 5 : (60 - gameTime > 20) ? 4 : 3;
 
       const fall = setInterval(() => {
         if(!gameActive) { clearInterval(fall); item.remove(); return; }
         top += speed;
         item.style.top = top + 'px';
 
-        // Collision Check
         const bRect = basket.getBoundingClientRect();
         const iRect = item.getBoundingClientRect();
 
@@ -882,7 +891,7 @@
       }, 80);
     }
 
-    /* --- SEC 6: SCRATCH CARDS (PREVIEW & SHUFFLE) --- */
+    /* --- SEC 6: SCRATCH CARDS --- */
     const coupons = [
       "Game Night Pass 🎮", "Favorite Meal 🍕", 
       "30-Min Massage 💆‍♂️", "Barber Shop Day 💈",
@@ -893,7 +902,7 @@
     function initScratchCards() {
       const grid = id('scratch-grid');
       grid.innerHTML = '';
-      coupons.forEach((text, idx) => {
+      coupons.forEach((text) => {
         const wrap = document.createElement('div');
         wrap.className = 'scratch-card-wrap';
         
@@ -908,7 +917,6 @@
         wrap.appendChild(canvas);
         grid.appendChild(wrap);
 
-        // Canvas Setup
         setTimeout(() => {
           canvas.width = wrap.clientWidth;
           canvas.height = wrap.clientHeight;
@@ -923,10 +931,8 @@
         }, 100);
       });
 
-      // Timer Logic: 10s preview -> 10s shuffle
       setTimeout(() => {
         id('scratch-instruction').innerText = "Shuffling cards... Get ready!";
-        // Trigger Shuffle Visual
         document.querySelectorAll('.scratch-card-wrap').forEach(el => el.style.transition = 'all 0.5s ease');
         setTimeout(() => {
           id('scratch-instruction').innerText = "Pick 3 cards to scratch!";
@@ -961,9 +967,12 @@
     }
     initScratchCards();
 
-    /* --- SEC 7: JUKEBOX --- */
-    function playVoiceNote(txt) {
-      id('voice-status').innerText = `Playing: "${txt}"`;
+    /* --- SEC 7: JUKEBOX & VOICE TAPES --- */
+    function playVoiceNote(file, tapeName) {
+      const player = id('tape-player');
+      player.src = file;
+      player.play();
+      id('voice-status').innerText = `▶️ Playing ${tapeName}...`;
     }
 
     /* --- SEC 8: VIBE DETECTOR --- */
@@ -987,7 +996,7 @@
       }
     }
 
-    /* --- SEC 10: SKIP TRAP --- */
+    /* --- SEC 10: SKIP TRAP & REPLY --- */
     let skipScale = 1;
     function dodgeSkip() {
       const btn = id('skip-btn');
@@ -1002,10 +1011,30 @@
       alert("Note saved! I'll read it soon 💖");
     }
 
-    /* --- EXIT EXPERIENCE --- */
+    /* --- EXIT EXPERIENCE & WEB3FORMS EMAIL --- */
     function triggerExit() {
       id('exit-modal').style.display = 'flex';
-      console.log("Master Summary Report:", userState);
+      
+      // Auto-capture letter text if typed
+      if(!userState.userLetter) {
+        userState.userLetter = id('user-reply-text').value;
+      }
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: '98b7e615-4a5e-4def-8f42-18e8a144d757',
+          subject: '💖 Mawutor Birthday Site Report',
+          high_score: userState.gameHighScore + ' pts',
+          vibe_selected: userState.selectedVibe,
+          scratch_cards_chosen: userState.cardsScratchWon.join(', ') || 'None scratched',
+          his_reply_letter: userState.userLetter || 'No letter written'
+        })
+      });
     }
 
     // Helper
@@ -1013,3 +1042,4 @@
   </script>
 </body>
 </html>
+
