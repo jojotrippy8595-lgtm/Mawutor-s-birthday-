@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Birthday, Mawutor! 💖</title>
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.85);
+      --pink-primary: #ec4899;
+      --pink-glow: #f472b6;
+      --gold: #f59e0b;
+      --accent-blue: #38bdf8;
+      --text-light: #f8fafc;
+      --text-muted: #94a3b8;
+      --radius: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      overflow-x: hidden;
+      padding-bottom: 80px;
+    }
+
+    /* Starfield Background */
+    #starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Container */
+    .app-container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* Card Wrapper */
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--pink-glow);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* Button Styling */
+    .btn {
+      background: linear-gradient(135deg, var(--pink-primary), #db2777);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+      transition: all 0.2s ease;
+      touch-action: manipulation;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+    }
+
+    /* --- SECTION 1: RELATIONSHIP COUNTER --- */
+    .timer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .timer-box {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 10px 4px;
+      border-radius: 12px;
+      border: 1px solid rgba(236, 72, 153, 0.2);
+    }
+    .timer-val {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--gold);
+    }
+    .timer-lbl {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* --- SECTION 2: VINYL LOUNGE --- */
+    .turntable {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin: 10px auto;
+      background: #1e1e24;
+      border-radius: 16px;
+      border: 4px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .record {
+      width: 170px;
+      height: 170px;
+      background: radial-gradient(circle, #333 15%, #111 16%, #222 40%, #111 41%, #222 70%);
+      border-radius: 50%;
+      position: relative;
+      transition: transform 0.5s ease;
+      box-shadow: 0 0 10px rgba(0,0,0,0.8);
+    }
+    .record.spinning {
+      animation: spin 3s linear infinite;
+    }
+    .record-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background: var(--pink-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: bold;
+      color: white;
+      text-align: center;
+    }
+    .tonearm {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      width: 60px;
+      height: 80px;
+      border-right: 4px solid #cbd5e1;
+      border-top: 4px solid #cbd5e1;
+      border-radius: 0 10px 0 0;
+      transform-origin: top right;
+      transform: rotate(-30deg);
+      transition: transform 0.6s ease;
+      pointer-events: none;
+    }
+    .tonearm.playing {
+      transform: rotate(12deg);
+    }
+
+    /* --- SECTION 3: BIRTHDAY CAKE --- */
+    .cake-container {
+      position: relative;
+      height: 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    .candle {
+      width: 12px;
+      height: 35px;
+      background: repeating-linear-gradient(45deg, #f43f5e, #f43f5e 5px, #fff 5px, #fff 10px);
+      border-radius: 3px;
+      position: relative;
+    }
+    .flame {
+      width: 14px;
+      height: 20px;
+      background: var(--gold);
+      border-radius: 50% 50% 20% 20%;
+      position: absolute;
+      top: -22px;
+      left: -1px;
+      box-shadow: 0 0 15px var(--gold);
+      animation: flicker 0.2s infinite alternate;
+    }
+    .smoke {
+      width: 8px;
+      height: 20px;
+      background: rgba(200, 200, 200, 0.6);
+      border-radius: 10px;
+      position: absolute;
+      top: -25px;
+      left: 2px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .smoke.active {
+      animation: rise 1.5s ease-out forwards;
+    }
+    .cake-base {
+      width: 140px;
+      height: 60px;
+      background: #fbcfe8;
+      border-radius: 12px 12px 4px 4px;
+      border-bottom: 6px solid #f472b6;
+      position: relative;
+      margin-top: 4px;
+    }
+    .icing {
+      width: 100%;
+      height: 20px;
+      background: #fff;
+      border-radius: 12px 12px 10px 10px;
+    }
+
+    /* --- SECTION 4: ARCADE CATCHING GAME --- */
+    #game-box {
+      width: 100%;
+      height: 260px;
+      background: #020617;
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid var(--pink-primary);
+      touch-action: none;
+    }
+    #basket {
+      width: 60px;
+      height: 24px;
+      background: var(--pink-primary);
+      border-radius: 12px;
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 10px var(--pink-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+    .falling-item {
+      position: absolute;
+      font-size: 1.5rem;
+      top: -30px;
+    }
+    .game-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    /* --- SECTION 5: SLOT MACHINE --- */
+    .slot-cabinet {
+      background: linear-gradient(180deg, #1e1b4b, #0f172a);
+      border: 3px solid var(--gold);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+    }
+    .slot-window {
+      background: #000;
+      height: 70px;
+      border-radius: 10px;
+      border: 2px solid #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .slot-text {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--gold);
+      padding: 0 10px;
+    }
+
+    /* --- SECTION 6: SCRATCH CARDS --- */
+    .scratch-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .scratch-card-wrap {
+      position: relative;
+      height: 100px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #1e293b;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .coupon-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: var(--pink-glow);
+      text-align: center;
+      background: #0f172a;
+    }
+    canvas.scratch-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      touch-action: none;
+    }
+
+    /* --- SECTION 7: JUKEBOX & PHOTOS --- */
+    .tapes-list {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .tape-btn {
+      background: #334155;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      border: 1px solid var(--pink-glow);
+      cursor: pointer;
+    }
+    .photo-wall {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .polaroid {
+      min-width: 110px;
+      background: white;
+      padding: 6px 6px 16px 6px;
+      border-radius: 4px;
+      color: #1e293b;
+      font-size: 0.65rem;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .polaroid-img {
+      width: 100%;
+      height: 90px;
+      background: #cbd5e1;
+      border-radius: 2px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    /* --- SECTION 8: VIBE DETECTOR --- */
+    .vibe-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .vibe-chip {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .vibe-chip.active {
+      background: var(--pink-primary);
+      border-color: var(--pink-glow);
+    }
+
+    /* --- SECTION 9: MECHANICAL ENVELOPE --- */
+    .envelope-box {
+      background: #fef3c7;
+      color: #78350f;
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      transition: all 0.5s ease;
+    }
+    .tumbler-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin: 16px 0;
+    }
+    .dial {
+      width: 36px;
+      height: 48px;
+      background: #451a03;
+      color: var(--gold);
+      font-size: 1.4rem;
+      font-weight: bold;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.8);
+    }
+    .letter-body {
+      display: none;
+      font-family: 'Georgia', serif;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      text-align: left;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 2px dashed #b45309;
+      color: #451a03;
+    }
+
+    /* --- SECTION 10: REPLY & SKIP TRAP --- */
+    .reply-area {
+      width: 100%;
+      height: 90px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 10px;
+      color: white;
+      margin-bottom: 12px;
+      resize: none;
+    }
+    .trap-actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      min-height: 50px;
+    }
+
+    /* --- SECTION 11: VIRGO STAR MAP --- */
+    .constellation-map {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto;
+      border-radius: 50%;
+      border: 1px dashed var(--accent-blue);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 70%);
+    }
+
+    /* Keyframes */
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    @keyframes flicker { 0% { opacity: 0.8; } 100% { opacity: 1; filter: drop-shadow(0 0 8px var(--gold)); } }
+    @keyframes rise { 0% { opacity: 0.8; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-30px) scale(2); } }
+
+    /* Exit Overlay */
+    #exit-modal {
+      position: fixed;
+      inset: 0;
+      background: #020617;
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <div class="app-container">
+
+    <!-- SEC 1: RELATIONSHIP COUNTER -->
+    <section class="card">
+      <div class="card-title">⌛ Our Time Together</div>
+      <p style="font-size: 0.85rem; color: var(--text-muted);">Counting every second since Feb 12, 2026</p>
+      <div class="timer-grid">
+        <div class="timer-box"><div class="timer-val" id="t-days">00</div><div class="timer-lbl">Days</div></div>
+        <div class="timer-box"><div class="timer-val" id="t-hours">00</div><div class="timer-lbl">Hours</div></div>
+        <div class="timer-box"><div class="timer-val" id="t-mins">00</div><div class="timer-lbl">Mins</div></div>
+        <div class="timer-box"><div class="timer-val" id="t-secs">00</div><div class="timer-lbl">Secs</div></div>
+      </div>
+    </section>
+
+    <!-- SEC 2: VIRTUAL VINYL LOUNGE -->
+    <section class="card">
+      <div class="card-title">🎵 Mawutor's Vinyl Lounge</div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Tap the record to spin "The Greatest Gift"</p>
+      <div class="turntable" id="turntable-btn">
+        <div class="record" id="vinyl-record">
+          <div class="record-label">Mawutor & Me 💖</div>
+        </div>
+        <div class="tonearm" id="tonearm"></div>
+      </div>
+      <audio id="bg-music" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3"></audio>
+    </section>
+
+    <!-- SEC 3: INTERACTIVE BIRTHDAY CAKE -->
+    <section class="card">
+      <div class="card-title">🎂 Make a Wish!</div>
+      <p style="font-size: 0.8rem; color: var(--text-muted);">Tap the cake to blow out your 22nd candle</p>
+      <div class="cake-container" id="cake-btn">
+        <div class="candle">
+          <div class="flame" id="cake-flame"></div>
+          <div class="smoke" id="cake-smoke"></div>
+        </div>
+        <div class="cake-base">
+          <div class="icing"></div>
+        </div>
+      </div>
+      <p id="cake-status" style="font-size: 0.85rem; color: var(--gold); margin-top: 12px; font-weight: bold;"></p>
+    </section>
+
+    <!-- SEC 4: ARCADE CATCHING GAME -->
+    <section class="card">
+      <div class="card-title">🎮 Arcade Treasure Catch</div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Catch Pizza 🍕, Controllers 🎮 & Tokens 🪙! Avoid Bombs 💣</p>
+      
+      <div id="game-box">
+        <div id="basket">🧺</div>
+        
+        <div class="game-overlay" id="game-start-screen">
+          <h3 style="color: var(--pink-glow);">60-Second Challenge</h3>
+          <p style="font-size: 0.8rem; color: #cbd5e1; max-width: 80%;">Drag your thumb to move the basket. Win tokens for the slot machine!</p>
+          <button class="btn" onclick="startGame()">START GAME 🚀</button>
+        </div>
+
+        <div class="game-overlay" id="game-over-screen" style="display: none;">
+          <h3 style="color: var(--gold);">TIME'S UP! 🔥</h3>
+          <p id="final-score-txt" style="font-size: 0.9rem; color: white;"></p>
+          <button class="btn" onclick="startGame()">PLAY AGAIN 🔄</button>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; margin-top: 8px; font-size: 0.85rem; font-weight: bold;">
+        <span>Time: <span id="game-timer" style="color:var(--gold)">60</span>s</span>
+        <span>Tokens: <span id="token-count" style="color:var(--pink-glow)">0</span> 🪙</span>
+      </div>
+    </section>
+
+    <!-- SEC 5: SLOT MACHINE -->
+    <section class="card">
+      <div class="card-title">🎰 Love Slot Machine</div>
+      <div class="slot-cabinet">
+        <div class="slot-window">
+          <div class="slot-text" id="slot-display">Insert Token & Spin!</div>
+        </div>
+        <button class="btn" style="width: 100%;" id="spin-btn" onclick="spinSlot()">SPIN (1 🪙)</button>
+      </div>
+    </section>
+
+    <!-- SEC 6: SCRATCH CARDS -->
+    <section class="card">
+      <div class="card-title">🎟️ Mystery Coupon Cards</div>
+      <p id="scratch-instruction" style="font-size: 0.8rem; color: var(--gold); font-weight: bold;">Memorize your choices! (10s preview)</p>
+      
+      <div class="scratch-grid" id="scratch-grid"></div>
+    </section>
+
+    <!-- SEC 7: JUKEBOX & PHOTOS -->
+    <section class="card">
+      <div class="card-title">📻 Voice Jukebox & Photos</div>
+      <div class="tapes-list">
+        <button class="tape-btn" onclick="playVoiceNote('Note 1: Happy Birthday Mawutor!')">📼 Tape 1</button>
+        <button class="tape-btn" onclick="playVoiceNote('Note 2: You mean the world to me!')">📼 Tape 2</button>
+        <button class="tape-btn" onclick="playVoiceNote('Note 3: Can\'t wait to celebrate!')">📼 Tape 3</button>
+      </div>
+      <p id="voice-status" style="font-size: 0.8rem; color: var(--pink-glow); margin-bottom: 12px;"></p>
+
+      <div class="photo-wall">
+        <div class="polaroid"><div class="polaroid-img">📸</div>Favorite Memory</div>
+        <div class="polaroid"><div class="polaroid-img">✨</div>That Smile</div>
+        <div class="polaroid"><div class="polaroid-img">💖</div>Us Together</div>
+      </div>
+    </section>
+
+    <!-- SEC 8: TODAY'S VIBE DETECTOR -->
+    <section class="card" id="vibe-card">
+      <div class="card-title">🎭 Today's Vibe Detector</div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">How are you feeling right now, birthday boy?</p>
+      <div class="vibe-btns">
+        <div class="vibe-chip" onclick="setVibe('Happy 😃', 'Let\'s keep that smile going all day long! 🎉')">Happy 😃</div>
+        <div class="vibe-chip" onclick="setVibe('Missing You 🥺', 'Sending you the biggest virtual hug right now! 🫂')">Missing You 🥺</div>
+        <div class="vibe-chip" onclick="setVibe('Overwhelmed 🤯', 'Take a deep breath. You\'ve got this, engineer! 💪')">Overwhelmed 🤯</div>
+        <div class="vibe-chip" onclick="setVibe('Chill 🎧', 'Kick back, put on your headphones, and relax.')">Chill 🎧</div>
+      </div>
+      <p id="vibe-msg" style="font-size: 0.85rem; color: var(--gold); font-weight: bold; margin-top: 8px;"></p>
+    </section>
+
+    <!-- SEC 9: MECHANICAL ENVELOPE -->
+    <section class="card">
+      <div class="card-title">✉️ Secret Birthday Letter</div>
+      <p style="font-size: 0.8rem; color: var(--text-muted);">Set the combination dial to your birthdate (170904)</p>
+
+      <div class="envelope-box">
+        <div style="font-size: 1.5rem; text-align: center;">🔒 LOCKED</div>
+        <div class="tumbler-row">
+          <div class="dial" onclick="cycleDial(0)">0</div>
+          <div class="dial" onclick="cycleDial(1)">0</div>
+          <div class="dial" onclick="cycleDial(2)">0</div>
+          <div class="dial" onclick="cycleDial(3)">0</div>
+          <div class="dial" onclick="cycleDial(4)">0</div>
+          <div class="dial" onclick="cycleDial(5)">0</div>
+        </div>
+        <div class="letter-body" id="secret-letter">
+          <p><strong>Dearest Mawutor,</strong></p><br>
+          <p>Happy 22nd Birthday! 🎉 From the moment we met on February 12th, you've brought so much warmth, joy, and laughter into my life.</p><br>
+          <p>I built this little interactive universe just for you to celebrate how amazing you are. I hope this new year brings you success in your engineering journey and all the happiness you deserve.</p><br>
+          <p>Always cheering for you,<br><strong>Yours ❤️</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEC 10: REPLY BOX & SKIP TRAP -->
+    <section class="card">
+      <div class="card-title">💬 Leave Me a Note</div>
+      <textarea class="reply-area" id="user-reply-text" placeholder="Write your thoughts here..."></textarea>
+      
+      <div class="trap-actions">
+        <button class="btn" id="send-btn" onclick="submitNote()">Send Note 💌</button>
+        <button class="btn" id="skip-btn" style="background: #475569; position: absolute; right: 10px;" onmouseover="dodgeSkip()" onclick="dodgeSkip()">Skip 😜</button>
+      </div>
+    </section>
+
+    <!-- SEC 11: VIRGO STAR MAP -->
+    <section class="card">
+      <div class="card-title">🌌 Virgo Constellation</div>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">September 17, 2004 • Born under the stars</p>
+      <div class="constellation-map">
+        <div style="font-size: 2.5rem;">♍</div>
+      </div>
+    </section>
+
+    <!-- EXIT BUTTON -->
+    <button class="btn" style="background: #334155; margin-top: 10px;" onclick="triggerExit()">Exit Experience 🚪</button>
+
+  </div>
+
+  <!-- EXIT OVERLAY -->
+  <div id="exit-modal">
+    <h2 style="color: var(--pink-glow); font-size: 1.8rem; margin-bottom: 10px;">Thanks for playing, birthday boy! 💖</h2>
+    <p style="color: #cbd5e1; font-size: 1rem; margin-bottom: 20px;">Your answers & scores have been sent to my inbox 💌</p>
+    <p style="font-size: 0.85rem; color: var(--text-muted);">You can safely close this browser tab now.</p>
+  </div>
+
+  <script>
+    // Global User State
+    const userState = {
+      gameHighScore: 0,
+      tokens: 0,
+      selectedVibe: "None",
+      cardsScratchWon: [],
+      userLetter: ""
+    };
+
+    /* --- STARFIELD BACKGROUND --- */
+    const canvas = id('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function initStars() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      stars = [];
+      for(let i=0; i<80; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 2,
+          alpha: Math.random()
+        });
+      }
+    }
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ffffff';
+      stars.forEach(s => {
+        ctx.globalAlpha = s.alpha;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+        ctx.fill();
+        s.alpha += (Math.random() - 0.5) * 0.02;
+        if(s.alpha < 0.1) s.alpha = 0.1;
+        if(s.alpha > 0.9) s.alpha = 0.9;
+      });
+      requestAnimationFrame(drawStars);
+    }
+    window.addEventListener('resize', initStars);
+    initStars();
+    drawStars();
+
+    /* --- SEC 1: TIMER --- */
+    const startDate = new Date('2026-02-12T00:00:00');
+    function updateTimer() {
+      const now = new Date();
+      const diff = Math.max(0, now - startDate);
+      id('t-days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+      id('t-hours').innerText = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      id('t-mins').innerText = Math.floor((diff / 1000 / 60) % 60);
+      id('t-secs').innerText = Math.floor((diff / 1000) % 60);
+    }
+    setInterval(updateTimer, 1000);
+
+    /* --- SEC 2: VINYL --- */
+    let isPlaying = false;
+    const audio = id('bg-music');
+    id('turntable-btn').addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      id('vinyl-record').classList.toggle('spinning', isPlaying);
+      id('tonearm').classList.toggle('playing', isPlaying);
+      if(isPlaying) audio.play(); else audio.pause();
+    });
+
+    /* --- SEC 3: CAKE --- */
+    let candleBlown = false;
+    id('cake-btn').addEventListener('click', () => {
+      if(candleBlown) return;
+      candleBlown = true;
+      id('cake-flame').style.display = 'none';
+      id('cake-smoke').classList.add('active');
+      id('cake-status').innerText = "✨ Wish Granted! Happy 22nd Birthday! ✨";
+    });
+
+    /* --- SEC 4: GAME --- */
+    let gameActive = false;
+    let gameTime = 60;
+    let gameScore = 0;
+    let gameInterval, itemInterval;
+    const basket = id('basket');
+    const gameBox = id('game-box');
+
+    // Drag Basket
+    let isDragging = false;
+    gameBox.addEventListener('pointerdown', () => isDragging = true);
+    window.addEventListener('pointermove', (e) => {
+      if(!isDragging || !gameActive) return;
+      const rect = gameBox.getBoundingClientRect();
+      let x = e.clientX - rect.left - 30;
+      x = Math.max(0, Math.min(rect.width - 60, x));
+      basket.style.left = x + 'px';
+      basket.style.transform = 'none';
+    });
+    window.addEventListener('pointerup', () => isDragging = false);
+
+    function startGame() {
+      gameActive = true;
+      gameTime = 60;
+      gameScore = 0;
+      id('game-start-screen').style.display = 'none';
+      id('game-over-screen').style.display = 'none';
+      id('game-timer').innerText = gameTime;
+
+      gameInterval = setInterval(() => {
+        gameTime--;
+        id('game-timer').innerText = gameTime;
+        if(gameTime <= 0) endGame();
+      }, 1000);
+
+      spawnItems();
+    }
+
+    function spawnItems() {
+      if(!gameActive) return;
+      const item = document.createElement('div');
+      item.className = 'falling-item';
+      
+      // Items: Pizza 🍕, Game Controller 🎮, Token 🪙, Gem 🌟, Bomb 💣
+      const types = ['🍕', '🎮', '🪙', '🌟'];
+      if(gameTime < 40) types.push('💣'); // Add bombs after 20s
+      
+      const chosen = types[Math.floor(Math.random() * types.length)];
+      item.innerText = chosen;
+      item.style.left = Math.random() * (gameBox.clientWidth - 30) + 'px';
+      gameBox.appendChild(item);
+
+      let top = -30;
+      let speed = (60 - gameTime > 40) ? 5 : (60 - gameTime > 20) ? 4 : 3; // Progressive difficulty
+
+      const fall = setInterval(() => {
+        if(!gameActive) { clearInterval(fall); item.remove(); return; }
+        top += speed;
+        item.style.top = top + 'px';
+
+        // Collision Check
+        const bRect = basket.getBoundingClientRect();
+        const iRect = item.getBoundingClientRect();
+
+        if (iRect.bottom >= bRect.top && iRect.top <= bRect.bottom &&
+            iRect.right >= bRect.left && iRect.left <= bRect.right) {
+          if(chosen === '💣') gameScore = Math.max(0, gameScore - 20);
+          else {
+            gameScore += (chosen === '🌟') ? 25 : (chosen === '🎮') ? 15 : 10;
+            if(chosen === '🪙') {
+              userState.tokens++;
+              id('token-count').innerText = userState.tokens;
+            }
+          }
+          clearInterval(fall);
+          item.remove();
+        }
+
+        if(top > gameBox.clientHeight) { clearInterval(fall); item.remove(); }
+      }, 20);
+
+      setTimeout(spawnItems, gameTime < 20 ? 400 : 700);
+    }
+
+    function endGame() {
+      gameActive = false;
+      clearInterval(gameInterval);
+      userState.gameHighScore = Math.max(userState.gameHighScore, gameScore);
+      id('final-score-txt').innerText = `Final Score: ${gameScore} pts!`;
+      id('game-over-screen').style.display = 'flex';
+    }
+
+    /* --- SEC 5: SLOT MACHINE --- */
+    const loveReasons = [
+      "Your infectious smile 😊", "How tall and handsome you are 💖",
+      "Your dedication to engineering ⚡", "Your warm hugs 🤗",
+      "How good you are at games 🎮", "Your kind heart ❤️"
+    ];
+    function spinSlot() {
+      if(userState.tokens < 1) {
+        alert("Play the catch game to earn tokens first!");
+        return;
+      }
+      userState.tokens--;
+      id('token-count').innerText = userState.tokens;
+      
+      const disp = id('slot-display');
+      let count = 0;
+      const spinInt = setInterval(() => {
+        disp.innerText = loveReasons[Math.floor(Math.random() * loveReasons.length)];
+        count++;
+        if(count > 15) {
+          clearInterval(spinInt);
+          disp.innerText = loveReasons[Math.floor(Math.random() * loveReasons.length)];
+        }
+      }, 80);
+    }
+
+    /* --- SEC 6: SCRATCH CARDS (PREVIEW & SHUFFLE) --- */
+    const coupons = [
+      "Game Night Pass 🎮", "Favorite Meal 🍕", 
+      "30-Min Massage 💆‍♂️", "Barber Shop Day 💈",
+      "Unlimited Kisses 💋", "Late Night Snack Run 🍦"
+    ];
+    let pickCount = 0;
+
+    function initScratchCards() {
+      const grid = id('scratch-grid');
+      grid.innerHTML = '';
+      coupons.forEach((text, idx) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'scratch-card-wrap';
+        
+        const content = document.createElement('div');
+        content.className = 'coupon-content';
+        content.innerText = text;
+
+        const canvas = document.createElement('canvas');
+        canvas.className = 'scratch-canvas';
+        
+        wrap.appendChild(content);
+        wrap.appendChild(canvas);
+        grid.appendChild(wrap);
+
+        // Canvas Setup
+        setTimeout(() => {
+          canvas.width = wrap.clientWidth;
+          canvas.height = wrap.clientHeight;
+          const cCtx = canvas.getContext('2d');
+          cCtx.fillStyle = '#94a3b8';
+          cCtx.fillRect(0, 0, canvas.width, canvas.height);
+          cCtx.fillStyle = '#475569';
+          cCtx.font = '12px sans-serif';
+          cCtx.fillText('🪙 Scratch', 10, 20);
+
+          setupScratchPhysics(canvas, text);
+        }, 100);
+      });
+
+      // Timer Logic: 10s preview -> 10s shuffle
+      setTimeout(() => {
+        id('scratch-instruction').innerText = "Shuffling cards... Get ready!";
+        // Trigger Shuffle Visual
+        document.querySelectorAll('.scratch-card-wrap').forEach(el => el.style.transition = 'all 0.5s ease');
+        setTimeout(() => {
+          id('scratch-instruction').innerText = "Pick 3 cards to scratch!";
+        }, 2000);
+      }, 10000);
+    }
+
+    function setupScratchPhysics(canvas, cardText) {
+      const cCtx = canvas.getContext('2d');
+      let isScratching = false;
+
+      function scratch(e) {
+        if(!isScratching || pickCount >= 3) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX || e.touches[0].clientX) - rect.left;
+        const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+        cCtx.globalCompositeOperation = 'destination-out';
+        cCtx.beginPath();
+        cCtx.arc(x, y, 15, 0, Math.PI * 2);
+        cCtx.fill();
+
+        if(!userState.cardsScratchWon.includes(cardText)) {
+          userState.cardsScratchWon.push(cardText);
+          pickCount++;
+        }
+      }
+
+      canvas.addEventListener('pointerdown', () => isScratching = true);
+      canvas.addEventListener('pointermove', scratch);
+      canvas.addEventListener('pointerup', () => isScratching = false);
+    }
+    initScratchCards();
+
+    /* --- SEC 7: JUKEBOX --- */
+    function playVoiceNote(txt) {
+      id('voice-status').innerText = `Playing: "${txt}"`;
+    }
+
+    /* --- SEC 8: VIBE DETECTOR --- */
+    function setVibe(vibe, msg) {
+      userState.selectedVibe = vibe;
+      document.querySelectorAll('.vibe-chip').forEach(el => el.classList.remove('active'));
+      event.target.classList.add('active');
+      id('vibe-msg').innerText = msg;
+    }
+
+    /* --- SEC 9: MECHANICAL ENVELOPE --- */
+    const code = [0, 0, 0, 0, 0, 0];
+    const targetCode = [1, 7, 0, 9, 0, 4];
+
+    function cycleDial(idx) {
+      code[idx] = (code[idx] + 1) % 10;
+      document.querySelectorAll('.dial')[idx].innerText = code[idx];
+      
+      if(JSON.stringify(code) === JSON.stringify(targetCode)) {
+        id('secret-letter').style.display = 'block';
+      }
+    }
+
+    /* --- SEC 10: SKIP TRAP --- */
+    let skipScale = 1;
+    function dodgeSkip() {
+      const btn = id('skip-btn');
+      btn.style.right = Math.random() * 150 + 'px';
+      btn.style.top = (Math.random() * 40 - 20) + 'px';
+      skipScale *= 0.8;
+      btn.style.transform = `scale(${skipScale})`;
+    }
+
+    function submitNote() {
+      userState.userLetter = id('user-reply-text').value;
+      alert("Note saved! I'll read it soon 💖");
+    }
+
+    /* --- EXIT EXPERIENCE --- */
+    function triggerExit() {
+      id('exit-modal').style.display = 'flex';
+      console.log("Master Summary Report:", userState);
+    }
+
+    // Helper
+    function id(str) { return document.getElementById(str); }
+  </script>
+</body>
+</html>
