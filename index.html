@@ -49,8 +49,9 @@
 
     .page-screen {
       position: absolute;
-      inset: 0;
-      padding: 20px 16px 80px 16px;
+      top: 0; left: 0; right: 0;
+      bottom: 70px; /* Leave exact space for fixed nav bar */
+      padding: 20px 16px;
       display: none;
       flex-direction: column;
       align-items: center;
@@ -59,6 +60,7 @@
       opacity: 0;
       transition: opacity 0.4s ease-in-out;
       overflow-y: auto;
+      z-index: 10;
     }
 
     .page-screen.active {
@@ -89,17 +91,19 @@
       margin-bottom: 16px;
     }
 
+    /* FIXED & GUARANTEED VISIBLE NAV BAR */
     .nav-bar {
       position: absolute;
       bottom: 0; left: 0; right: 0;
       height: 70px;
-      background: rgba(255, 247, 237, 0.95);
+      background: #ffffff;
       border-top: 2px solid var(--pink-soft);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 20px;
-      z-index: 100;
+      z-index: 9999; /* Higher than everything else */
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
     }
 
     .btn {
@@ -193,7 +197,7 @@
 
     /* PAGE 5: ARCADE GAME */
     #game-box {
-      width: 100%; height: 240px; background: #fff0f6;
+      width: 100%; height: 220px; background: #fff0f6;
       border-radius: 16px; border: 2px solid var(--pink-primary);
       position: relative; overflow: hidden; touch-action: none;
     }
@@ -216,7 +220,7 @@
     /* PAGE 7: SCRATCH CARDS */
     .scratch-container { display: flex; flex-direction: column; gap: 10px; width: 100%; }
     .scratch-card-wrap {
-      position: relative; height: 60px; border-radius: 12px;
+      position: relative; height: 50px; border-radius: 12px;
       overflow: hidden; background: #fff; border: 2px solid var(--orange-primary);
     }
     .coupon-content {
@@ -239,30 +243,30 @@
 
     /* PAGE 9: REALISTIC BLUE LOCK ENVELOPE */
     .envelope-container {
-      background: #e2e8f0; border-radius: 12px; padding: 16px; border: 2px solid #94a3b8;
+      background: #e2e8f0; border-radius: 12px; padding: 12px; border: 2px solid #94a3b8;
     }
     .blue-lock {
       background: linear-gradient(135deg, #0284c7, #0369a1);
-      border: 3px solid #38bdf8; border-radius: 12px; padding: 12px; color: white;
+      border: 3px solid #38bdf8; border-radius: 12px; padding: 10px; color: white;
     }
-    .tumbler-row { display: flex; justify-content: center; gap: 6px; margin: 10px 0; }
+    .tumbler-row { display: flex; justify-content: center; gap: 6px; margin: 8px 0; }
     .dial {
-      width: 32px; height: 40px; background: #0f172a; color: #38bdf8;
-      font-size: 1.2rem; font-weight: bold; border-radius: 6px;
+      width: 30px; height: 38px; background: #0f172a; color: #38bdf8;
+      font-size: 1.1rem; font-weight: bold; border-radius: 6px;
       display: flex; align-items: center; justify-content: center; cursor: pointer;
     }
     .coffee-letter {
       display: none; background: #fdf6e3;
       background-image: radial-gradient(#eee8d5 10%, transparent 11%);
       background-size: 10px 10px; border: 2px solid #d97706; border-radius: 8px;
-      padding: 16px; margin-top: 12px; font-family: 'Dancing Script', cursive;
-      font-size: 1.25rem; color: #451a03; text-align: left; line-height: 1.6;
-      max-height: 250px; overflow-y: auto; white-space: pre-line;
+      padding: 14px; margin-top: 10px; font-family: 'Dancing Script', cursive;
+      font-size: 1.15rem; color: #451a03; text-align: left; line-height: 1.5;
+      max-height: 200px; overflow-y: auto; white-space: pre-line;
     }
 
     /* PAGE 10: PRIVATE REPLY */
     .reply-area {
-      width: 100%; height: 100px; background: var(--bg-color);
+      width: 100%; height: 90px; background: var(--bg-color);
       border: 2px solid var(--orange-primary); border-radius: 10px;
       padding: 10px; margin-bottom: 12px; resize: none; font-size: 0.9rem;
     }
@@ -286,7 +290,7 @@
     /* CLOSING OVERLAY */
     #exit-overlay {
       position: fixed; inset: 0; background: var(--purple-dark);
-      color: white; z-index: 1000; display: none; flex-direction: column;
+      color: white; z-index: 10000; display: none; flex-direction: column;
       align-items: center; justify-content: center; padding: 24px; text-align: center;
     }
 
@@ -338,7 +342,7 @@
       </div>
     </div>
 
-    <!-- PAGE 4: MOOD DETECTOR (MULTIPLE SELECTIONS ENABLED) -->
+    <!-- PAGE 4: MOOD DETECTOR -->
     <div class="page-screen" id="page-4">
       <div class="card">
         <div class="title">🎭 Today's Mood Detector</div>
@@ -499,10 +503,10 @@ Happy happy birthday! ❤️
       </div>
     </div>
 
-    <!-- NAVIGATION BAR -->
+    <!-- ALWAYS VISIBLE NAVIGATION BAR -->
     <div class="nav-bar">
       <button class="btn btn-secondary" id="btn-back" onclick="changePage(-1)">↵ Back</button>
-      <span id="page-indicator" style="font-size:0.8rem; font-weight:bold;">1 / 11</span>
+      <span id="page-indicator" style="font-size:0.85rem; font-weight:800; color: var(--purple-dark);">1 / 11</span>
       <button class="btn" id="btn-next" onclick="changePage(1)">Next ➔</button>
     </div>
 
@@ -600,7 +604,7 @@ Happy happy birthday! ❤️
       candleGrid.appendChild(c);
     }
 
-    // PAGE 4: MOOD DETECTOR (MULTIPLE SELECTIONS SUPPORTED)
+    // PAGE 4: MOOD DETECTOR
     function playMood(mood, file, el) {
       el.classList.toggle('active');
       if (el.classList.contains('active')) {
@@ -681,8 +685,7 @@ Happy happy birthday! ❤️
       const disp = document.getElementById('slot-display');
       let cnt = 0;
       const int = setInterval(() => {
-        const chosenReason = reasons[Math.floor(Math.random() * reasons.length)];
-        disp.innerText = chosenReason;
+        disp.innerText = reasons[Math.floor(Math.random() * reasons.length)];
         cnt++;
         if(cnt > 10) {
           clearInterval(int);
