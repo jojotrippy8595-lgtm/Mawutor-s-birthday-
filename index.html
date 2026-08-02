@@ -31,6 +31,7 @@
     body, html {
       width: 100%;
       height: 100%;
+      height: 100dvh;
       background-color: var(--bg-color);
       color: var(--purple-dark);
       overflow: hidden;
@@ -39,26 +40,34 @@
     .app-viewport {
       width: 100%;
       max-width: 480px;
-      height: 100vh;
+      height: 100%;
+      height: 100dvh;
       margin: 0 auto;
       position: relative;
-      overflow: hidden;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* MAIN CONTENT CONTAINER THAT SCROLLS ABOVE NAV BAR */
+    .content-area {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      overflow: hidden;
     }
 
     .page-screen {
       position: absolute;
-      top: 0; left: 0; right: 0;
-      bottom: 70px; /* Leave exact space for fixed nav bar */
+      inset: 0;
       padding: 20px 16px;
       display: none;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       text-align: center;
       opacity: 0;
-      transition: opacity 0.4s ease-in-out;
+      transition: opacity 0.3s ease-in-out;
       overflow-y: auto;
       z-index: 10;
     }
@@ -76,6 +85,7 @@
       padding: 20px;
       box-shadow: 0 10px 25px rgba(249, 115, 22, 0.15);
       position: relative;
+      margin: auto 0;
     }
 
     .title {
@@ -91,36 +101,37 @@
       margin-bottom: 16px;
     }
 
-    /* FIXED & GUARANTEED VISIBLE NAV BAR */
+    /* ALWAYS VISIBLE BOTTOM NAVIGATION BAR */
     .nav-bar {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
       height: 70px;
+      width: 100%;
       background: #ffffff;
       border-top: 2px solid var(--pink-soft);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 20px;
-      z-index: 9999; /* Higher than everything else */
-      box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+      z-index: 9999;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.08);
+      flex-shrink: 0;
     }
 
     .btn {
       background: linear-gradient(135deg, var(--orange-primary), var(--pink-primary));
       color: white;
       border: none;
-      padding: 10px 20px;
-      font-size: 0.9rem;
+      padding: 12px 24px;
+      font-size: 0.95rem;
       font-weight: 700;
       border-radius: 30px;
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
-      transition: transform 0.1s ease;
+      transition: transform 0.1s ease, opacity 0.2s;
     }
 
     .btn:active { transform: scale(0.95); }
     .btn-secondary { background: var(--purple-dark); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     /* PAGE 1: TIMER */
     .timer-grid {
@@ -302,140 +313,142 @@
 <body>
 
   <div class="app-viewport">
+    <!-- SCROLLABLE CONTENT AREA -->
+    <div class="content-area">
 
-    <!-- PAGE 1: TIMER -->
-    <div class="page-screen active" id="page-1">
-      <div class="card">
-        <div class="title">⌛ Days Since We Met</div>
-        <div class="subtitle">Counting every second with you</div>
-        <div class="timer-grid">
-          <div class="timer-box"><div class="timer-val" id="t-days">00</div><div class="timer-lbl">Days</div></div>
-          <div class="timer-box"><div class="timer-val" id="t-hours">00</div><div class="timer-lbl">Hours</div></div>
-          <div class="timer-box"><div class="timer-val" id="t-mins">00</div><div class="timer-lbl">Mins</div></div>
-          <div class="timer-box"><div class="timer-val" id="t-secs">00</div><div class="timer-lbl">Secs</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 2: VINYL LOUNGE -->
-    <div class="page-screen" id="page-2">
-      <div class="card">
-        <div class="title">🎵 Mawutor's Vinyl Lounge</div>
-        <div class="subtitle">Tap the turntable to play "Greatest Gift"</div>
-        <div class="turntable" id="turntable-btn">
-          <div class="record" id="vinyl-record">
-            <div class="record-label">Greatest Gift 💖</div>
+      <!-- PAGE 1: TIMER -->
+      <div class="page-screen active" id="page-1">
+        <div class="card">
+          <div class="title">⌛ Days Since We Met</div>
+          <div class="subtitle">Counting every second with you</div>
+          <div class="timer-grid">
+            <div class="timer-box"><div class="timer-val" id="t-days">00</div><div class="timer-lbl">Days</div></div>
+            <div class="timer-box"><div class="timer-val" id="t-hours">00</div><div class="timer-lbl">Hours</div></div>
+            <div class="timer-box"><div class="timer-val" id="t-mins">00</div><div class="timer-lbl">Mins</div></div>
+            <div class="timer-box"><div class="timer-val" id="t-secs">00</div><div class="timer-lbl">Secs</div></div>
           </div>
         </div>
-        <audio id="audio-vinyl" src="greatest-gift.mp3" loop></audio>
       </div>
-    </div>
 
-    <!-- PAGE 3: 22 CANDLES -->
-    <div class="page-screen" id="page-3">
-      <div class="card">
-        <div class="title">🎂 Blow 22 Candles!</div>
-        <div class="subtitle">Tap all 22 candles to reveal your birthday confetti!</div>
-        <div class="candle-grid" id="candle-grid"></div>
-        <p id="candle-msg" style="font-size: 0.85rem; font-weight: bold; color: var(--orange-dark);"></p>
-        <audio id="audio-jayo" src="jayo-22.mp3" loop></audio>
-      </div>
-    </div>
-
-    <!-- PAGE 4: MOOD DETECTOR -->
-    <div class="page-screen" id="page-4">
-      <div class="card">
-        <div class="title">🎭 Today's Mood Detector</div>
-        <div class="subtitle">Tap as many moods as you feel right now!</div>
-        <div class="vibe-grid">
-          <div class="vibe-card" onclick="playMood('Happy 😃', 'price-tag.mp3', this)">
-            <span>Happy 😃</span><span style="font-size:0.75rem;">Counting Stars 🎵</span>
-          </div>
-          <div class="vibe-card" onclick="playMood('Missing You 🥺', 'addicted.m4a', this)">
-            <span>Missing You 🥺</span><span style="font-size:0.75rem;">Addicted 🎵</span>
-          </div>
-          <div class="vibe-card" onclick="playMood('Overwhelmed 🤯', 'rivers-and-roads.mp3', this)">
-            <span>Overwhelmed 🤯</span><span style="font-size:0.75rem;">Rivers & Roads 🎵</span>
-          </div>
-          <div class="vibe-card" onclick="playMood('Chill 🎧', 'falling-or-flying.m4a', this)">
-            <span>Chill 🎧</span><span style="font-size:0.75rem;">Falling or Flying 🎵</span>
-          </div>
-        </div>
-        <audio id="audio-mood"></audio>
-      </div>
-    </div>
-
-    <!-- PAGE 5: ARCADE GAME -->
-    <div class="page-screen" id="page-5">
-      <div class="card">
-        <div class="title">🎮 Arcade Catch Challenge</div>
-        <div class="subtitle">Catch Pizza 🍕 & Controllers 🎮! Avoid Bombs 💣!</div>
-        <div id="game-box">
-          <div id="basket">🧺</div>
-        </div>
-        <div style="display:flex; justify-content:space-between; margin-top:8px; font-weight:bold; font-size:0.85rem;">
-          <span>Time: <span id="game-timer">60</span>s</span>
-          <span>Tokens: <span id="token-count">0</span> 🪙</span>
-        </div>
-        <button class="btn" style="margin-top:8px; width:100%;" onclick="startGame()">START GAME 🚀</button>
-      </div>
-    </div>
-
-    <!-- PAGE 6: SLOT MACHINE -->
-    <div class="page-screen" id="page-6">
-      <div class="card">
-        <div class="title">🎰 20 Reasons Why I Love You</div>
-        <div class="slot-cabinet">
-          <div class="slot-window" id="slot-display">Insert 1 Token & Spin!</div>
-          <button class="btn" style="width:100%;" onclick="spinSlot()">SPIN SLOT (1 🪙)</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 7: SCRATCH CARDS -->
-    <div class="page-screen" id="page-7">
-      <div class="card">
-        <div class="title">🎟️ Your Birthday Coupons</div>
-        <div class="subtitle" id="scratch-status">Memorize your 5 coupons! (10s)</div>
-        <div class="scratch-container" id="scratch-container"></div>
-      </div>
-    </div>
-
-    <!-- PAGE 8: JUKEBOX & PHOTOS -->
-    <div class="page-screen" id="page-8">
-      <div class="card">
-        <div class="title">📻 Voice Tapes & Photos</div>
-        <div class="tape-btns">
-          <button class="btn" onclick="playTape('tape1.m4a', 1)">📼 Tape 1</button>
-          <button class="btn" onclick="playTape('tape2.m4a', 2)">📼 Tape 2</button>
-          <button class="btn" onclick="playTape('tape3.m4a', 3)">📼 Tape 3</button>
-        </div>
-        <audio id="audio-tape"></audio>
-        <div class="photo-wall">
-          <div class="polaroid"><img src="photo1.jpg" class="polaroid-img" alt="Memory 1">Favorite Memory</div>
-          <div class="polaroid"><img src="photo2.jpg" class="polaroid-img" alt="Memory 2">That Smile</div>
-          <div class="polaroid"><img src="photo3.jpg" class="polaroid-img" alt="Memory 3">Us Together</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 9: REALISTIC BLUE LOCK ENVELOPE -->
-    <div class="page-screen" id="page-9">
-      <div class="card">
-        <div class="title">✉️ Secret Birthday Letter</div>
-        <div class="envelope-container">
-          <div class="blue-lock">
-            <div id="lock-status" style="font-size:0.8rem; font-weight:bold;">🔒 METALLIC LOCK (170904)</div>
-            <div class="tumbler-row">
-              <div class="dial" onclick="cycleDial(0)">0</div>
-              <div class="dial" onclick="cycleDial(1)">0</div>
-              <div class="dial" onclick="cycleDial(2)">0</div>
-              <div class="dial" onclick="cycleDial(3)">0</div>
-              <div class="dial" onclick="cycleDial(4)">0</div>
-              <div class="dial" onclick="cycleDial(5)">0</div>
+      <!-- PAGE 2: VINYL LOUNGE -->
+      <div class="page-screen" id="page-2">
+        <div class="card">
+          <div class="title">🎵 Mawutor's Vinyl Lounge</div>
+          <div class="subtitle">Tap the turntable to play "Greatest Gift"</div>
+          <div class="turntable" id="turntable-btn">
+            <div class="record" id="vinyl-record">
+              <div class="record-label">Greatest Gift 💖</div>
             </div>
           </div>
-          <div class="coffee-letter" id="secret-letter">
+          <audio id="audio-vinyl" src="greatest-gift.mp3" loop></audio>
+        </div>
+      </div>
+
+      <!-- PAGE 3: 22 CANDLES -->
+      <div class="page-screen" id="page-3">
+        <div class="card">
+          <div class="title">🎂 Blow 22 Candles!</div>
+          <div class="subtitle">Tap all 22 candles to reveal your birthday confetti!</div>
+          <div class="candle-grid" id="candle-grid"></div>
+          <p id="candle-msg" style="font-size: 0.85rem; font-weight: bold; color: var(--orange-dark);"></p>
+          <audio id="audio-jayo" src="jayo-22.mp3" loop></audio>
+        </div>
+      </div>
+
+      <!-- PAGE 4: MOOD DETECTOR -->
+      <div class="page-screen" id="page-4">
+        <div class="card">
+          <div class="title">🎭 Today's Mood Detector</div>
+          <div class="subtitle">Tap as many moods as you feel right now!</div>
+          <div class="vibe-grid">
+            <div class="vibe-card" onclick="playMood('Happy 😃', 'counting-stars.flac', this)">
+              <span>Happy 😃</span><span style="font-size:0.75rem;">Counting Stars 🎵</span>
+            </div>
+            <div class="vibe-card" onclick="playMood('Missing You 🥺', 'addicted.m4a', this)">
+              <span>Missing You 🥺</span><span style="font-size:0.75rem;">Addicted 🎵</span>
+            </div>
+            <div class="vibe-card" onclick="playMood('Overwhelmed 🤯', 'rivers-and-roads.mp3', this)">
+              <span>Overwhelmed 🤯</span><span style="font-size:0.75rem;">Rivers & Roads 🎵</span>
+            </div>
+            <div class="vibe-card" onclick="playMood('Chill 🎧', 'falling-or-flying.m4a', this)">
+              <span>Chill 🎧</span><span style="font-size:0.75rem;">Falling or Flying 🎵</span>
+            </div>
+          </div>
+          <audio id="audio-mood"></audio>
+        </div>
+      </div>
+
+      <!-- PAGE 5: ARCADE GAME -->
+      <div class="page-screen" id="page-5">
+        <div class="card">
+          <div class="title">🎮 Arcade Catch Challenge</div>
+          <div class="subtitle">Catch Pizza 🍕 & Controllers 🎮! Avoid Bombs 💣!</div>
+          <div id="game-box">
+            <div id="basket">🧺</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:8px; font-weight:bold; font-size:0.85rem;">
+            <span>Time: <span id="game-timer">60</span>s</span>
+            <span>Tokens: <span id="token-count">0</span> 🪙</span>
+          </div>
+          <button class="btn" style="margin-top:8px; width:100%;" onclick="startGame()">START GAME 🚀</button>
+        </div>
+      </div>
+
+      <!-- PAGE 6: SLOT MACHINE -->
+      <div class="page-screen" id="page-6">
+        <div class="card">
+          <div class="title">🎰 20 Reasons Why I Love You</div>
+          <div class="slot-cabinet">
+            <div class="slot-window" id="slot-display">Insert 1 Token & Spin!</div>
+            <button class="btn" style="width:100%;" onclick="spinSlot()">SPIN SLOT (1 🪙)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 7: SCRATCH CARDS -->
+      <div class="page-screen" id="page-7">
+        <div class="card">
+          <div class="title">🎟️ Your Birthday Coupons</div>
+          <div class="subtitle" id="scratch-status">Memorize your 5 coupons! (10s)</div>
+          <div class="scratch-container" id="scratch-container"></div>
+        </div>
+      </div>
+
+      <!-- PAGE 8: JUKEBOX & PHOTOS -->
+      <div class="page-screen" id="page-8">
+        <div class="card">
+          <div class="title">📻 Voice Tapes & Photos</div>
+          <div class="tape-btns">
+            <button class="btn" onclick="playTape('tape1.m4a', 1)">📼 Tape 1</button>
+            <button class="btn" onclick="playTape('tape2.m4a', 2)">📼 Tape 2</button>
+            <button class="btn" onclick="playTape('tape3.m4a', 3)">📼 Tape 3</button>
+          </div>
+          <audio id="audio-tape"></audio>
+          <div class="photo-wall">
+            <div class="polaroid"><img src="photo1.jpg" class="polaroid-img" alt="Memory 1">Favorite Memory</div>
+            <div class="polaroid"><img src="photo2.jpg" class="polaroid-img" alt="Memory 2">That Smile</div>
+            <div class="polaroid"><img src="photo3.jpg" class="polaroid-img" alt="Memory 3">Us Together</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAGE 9: REALISTIC BLUE LOCK ENVELOPE -->
+      <div class="page-screen" id="page-9">
+        <div class="card">
+          <div class="title">✉️ Secret Birthday Letter</div>
+          <div class="envelope-container">
+            <div class="blue-lock">
+              <div id="lock-status" style="font-size:0.8rem; font-weight:bold;">🔒 METALLIC LOCK (170904)</div>
+              <div class="tumbler-row">
+                <div class="dial" onclick="cycleDial(0)">0</div>
+                <div class="dial" onclick="cycleDial(1)">0</div>
+                <div class="dial" onclick="cycleDial(2)">0</div>
+                <div class="dial" onclick="cycleDial(3)">0</div>
+                <div class="dial" onclick="cycleDial(4)">0</div>
+                <div class="dial" onclick="cycleDial(5)">0</div>
+              </div>
+            </div>
+            <div class="coffee-letter" id="secret-letter">
 Oh Mawutor,
 My love, you're 22 years today its a big age... but you're a big boy.
 
@@ -465,7 +478,7 @@ It won't be your ideal way to spend your day i know but I would have liked that.
 
 Either way I wish this will be the best day for you since you're turning 22... its quite heavy tho.
 
-I hope everyone sees how great you are cause I do and I hope you celebrate your day to the fullest cause damn baby you're growing old with a cute ass and a good waist...
+I hope everyone sees how great you are cause I do and I hope you celebrate your day to the fullest cause damn baby you're going old with a cute ass and a good waist...
 
 How could I forget how annoying you can be and how bittable and huggable and muahmauh-able too!
 
@@ -474,33 +487,35 @@ I'll keep praying for you and just do you my love... nothing is better than just
 
 I love you Mawutor.
 Happy happy birthday! ❤️
+            </div>
+          </div>
+          <audio id="audio-pretty" src="pretty.m4a" loop></audio>
+        </div>
+      </div>
+
+      <!-- PAGE 10: PRIVATE REPLY -->
+      <div class="page-screen" id="page-10">
+        <div class="card">
+          <div class="title">💬 Leave Me a Note</div>
+          <textarea class="reply-area" id="reply-text" placeholder="Write your thoughts here..."></textarea>
+          <div style="position:relative; height:50px; display:flex; justify-content:center; align-items:center;">
+            <button class="btn" onclick="saveReply()">Save Note 💌</button>
+            <button class="btn" id="skip-btn" style="background:#94a3b8; position:absolute; right:0;" onmouseover="dodgeSkip()" onclick="dodgeSkip()">Skip 😜</button>
           </div>
         </div>
-        <audio id="audio-pretty" src="pretty.m4a" loop></audio>
       </div>
-    </div>
 
-    <!-- PAGE 10: PRIVATE REPLY -->
-    <div class="page-screen" id="page-10">
-      <div class="card">
-        <div class="title">💬 Leave Me a Note</div>
-        <textarea class="reply-area" id="reply-text" placeholder="Write your thoughts here..."></textarea>
-        <div style="position:relative; height:50px; display:flex; justify-content:center; align-items:center;">
-          <button class="btn" onclick="saveReply()">Save Note 💌</button>
-          <button class="btn" id="skip-btn" style="background:#94a3b8; position:absolute; right:0;" onmouseover="dodgeSkip()" onclick="dodgeSkip()">Skip 😜</button>
+      <!-- PAGE 11: NIGHT SKY -->
+      <div class="page-screen night-sky-screen" id="page-11">
+        <div class="shooting-star" id="star-streak"></div>
+        <div class="card" style="background: rgba(30, 27, 75, 0.85); color: white; border-color: var(--sky-blue);">
+          <div class="title" style="color: var(--sky-blue);">🌌 September 17 Night Sky</div>
+          <div class="subtitle" style="color: #cbd5e1;">Look up... A shooting star is crossing the sky. Make a wish!</div>
+          <input type="text" id="wish-input" placeholder="Type your birthday wish here..." style="width:100%; padding:10px; border-radius:8px; border:none; margin:12px 0;">
+          <button class="btn" onclick="triggerShootingStar()">Make Wish 💫</button>
         </div>
       </div>
-    </div>
 
-    <!-- PAGE 11: NIGHT SKY -->
-    <div class="page-screen night-sky-screen" id="page-11">
-      <div class="shooting-star" id="star-streak"></div>
-      <div class="card" style="background: rgba(30, 27, 75, 0.85); color: white; border-color: var(--sky-blue);">
-        <div class="title" style="color: var(--sky-blue);">🌌 September 17 Night Sky</div>
-        <div class="subtitle" style="color: #cbd5e1;">Look up... A shooting star is crossing the sky. Make a wish!</div>
-        <input type="text" id="wish-input" placeholder="Type your birthday wish here..." style="width:100%; padding:10px; border-radius:8px; border:none; margin:12px 0;">
-        <button class="btn" onclick="triggerShootingStar()">Make Wish 💫</button>
-      </div>
     </div>
 
     <!-- ALWAYS VISIBLE NAVIGATION BAR -->
@@ -527,6 +542,10 @@ Happy happy birthday! ❤️
     
     const WEB3FORMS_KEY = "98b7e615-4a5e-4def-8f42-18e8a144d757";
 
+    function updateNavButtons() {
+      document.getElementById('btn-back').disabled = (currentPage === 1);
+    }
+
     function changePage(delta) {
       const next = currentPage + delta;
       if (next >= 1 && next <= totalPages) {
@@ -535,7 +554,13 @@ Happy happy birthday! ❤️
         document.getElementById(`page-${currentPage}`).classList.add('active');
         document.getElementById('page-indicator').innerText = `${currentPage} / ${totalPages}`;
         
-        if(currentPage === 3) document.getElementById('audio-jayo').play();
+        updateNavButtons();
+
+        // Safely play audio on target pages without throwing unhandled exceptions
+        if(currentPage === 3) {
+          const audioJayo = document.getElementById('audio-jayo');
+          if(audioJayo) audioJayo.play().catch(e => console.log("Audio play deferred or unavailable"));
+        }
         if(currentPage === 11) generateStars();
       } else if (next > totalPages) {
         document.getElementById('exit-overlay').style.display = 'flex';
@@ -576,7 +601,7 @@ Happy happy birthday! ❤️
       document.getElementById('vinyl-record').classList.toggle('spinning', vinylPlaying);
       const audio = document.getElementById('audio-vinyl');
       if(vinylPlaying) {
-        audio.play();
+        audio.play().catch(e => console.log(e));
         sendEmail("🎵 Vinyl Player Started", "Mawutor played 'Greatest Gift' on the Vinyl Lounge!");
       } else {
         audio.pause();
@@ -618,7 +643,7 @@ Happy happy birthday! ❤️
       
       const audio = document.getElementById('audio-mood');
       audio.src = file;
-      audio.play();
+      audio.play().catch(e => console.log(e));
     }
 
     // PAGE 5: ARCADE GAME
@@ -758,7 +783,7 @@ Happy happy birthday! ❤️
     // PAGE 8: TAPE PLAYER
     function playTape(file, tapeNum) {
       const a = document.getElementById('audio-tape');
-      a.src = file; a.play();
+      a.src = file; a.play().catch(e => console.log(e));
       sendEmail("📻 Voice Tape Played", `Mawutor listened to Voice Tape ${tapeNum} (${file})`);
     }
 
@@ -770,7 +795,7 @@ Happy happy birthday! ❤️
       if(JSON.stringify(code) === JSON.stringify(target)) {
         document.getElementById('lock-status').innerText = "🔓 UNLOCKED";
         document.getElementById('secret-letter').style.display = 'block';
-        document.getElementById('audio-pretty').play();
+        document.getElementById('audio-pretty').play().catch(e => console.log(e));
         sendEmail("🔓 Birthday Letter Unlocked!", "Mawutor successfully cracked the lock combination (170904) and unlocked your letter!");
       }
     }
@@ -795,7 +820,10 @@ Happy happy birthday! ❤️
     }
 
     // PAGE 11: NIGHT SKY
+    let starsGenerated = false;
     function generateStars() {
+      if(starsGenerated) return;
+      starsGenerated = true;
       const sky = document.getElementById('page-11');
       for(let i=0; i<40; i++) {
         const s = document.createElement('div');
@@ -818,7 +846,9 @@ Happy happy birthday! ❤️
       
       setTimeout(() => star.classList.remove('active'), 1500);
     }
+
+    // Initialize button state
+    updateNavButtons();
   </script>
 </body>
 </html>
-
